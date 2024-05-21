@@ -8,6 +8,7 @@ const path= require("path");
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
+app.use(express.urlencoded({extended: true}));
 
 async function main(){
     await mongoose.connect(mongoose_url); 
@@ -29,15 +30,26 @@ main().then(()=>{console.log("Connected to Mongoose")})
 //     res.send("Listing Test Successfully");
 // })
 
+//Set up
+app.get("/", (req, res)=>{
+    console.log("Index Route Successfully");
+    res.send("Index Route Successfully");
+})
+
 //Index Route
 app.get("/listing", async (req, res)=>{
     const allListing= await Listing.find({});
     res.render("index.ejs", { allListing });
 })
 
-app.get("/", (req, res)=>{
-    console.log("Index Route Successfully");
-    res.send("Index Route Successfully");
+//Show Route
+app.get("/listing/:id", async (req, res)=>{
+    let {id} = req.params;
+    const listing= await Listing.findById(id);
+    console.log(`Getting request on ID`);
+    // res.send(showData);
+    // console.log(showData);
+    res.render("show.ejs", { listing });
 })
 
 app.listen(port, ()=>{
