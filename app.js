@@ -42,6 +42,13 @@ app.get("/listing", async (req, res)=>{
     res.render("index.ejs", { allListing });
 })
 
+//New Route
+app.get("/listing/new", (req, res)=>{
+    console.log("Getting New Request");
+    // res.send("Getting New Request");
+    res.render("new.ejs");
+})
+
 //Show Route
 app.get("/listing/:id", async (req, res)=>{
     let {id} = req.params;
@@ -50,6 +57,18 @@ app.get("/listing/:id", async (req, res)=>{
     // res.send(showData);
     // console.log(showData);
     res.render("show.ejs", { listing });
+})
+
+//Create Route
+app.post("/listing", async (req, res)=>{
+    let listing = req.body.listing;
+    // console.log(listing);
+    // res.send(req.body.listing);
+    // console.log(listing);
+    let newListing= new Listing(listing);
+    await newListing.save().then((res)=>{console.log(res)})
+    .catch((err)=>{console.log(err)});
+    res.redirect("/listing");
 })
 
 app.listen(port, ()=>{
