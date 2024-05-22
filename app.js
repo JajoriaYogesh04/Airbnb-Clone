@@ -39,24 +39,24 @@ app.get("/", (req, res)=>{
 //Index Route
 app.get("/listing", async (req, res)=>{
     const allListing= await Listing.find({});
-    res.render("index.ejs", { allListing });
+    res.render("listings/index.ejs", { allListing });
 })
 
 //New Route
 app.get("/listing/new", (req, res)=>{
     console.log("Getting New Request");
     // res.send("Getting New Request");
-    res.render("new.ejs");
+    res.render("listings/new.ejs");
 })
 
 //Show Route
 app.get("/listing/:id", async (req, res)=>{
     let {id} = req.params;
     const listing= await Listing.findById(id);
-    console.log(`Getting request on ID`);
+    console.log(`Show request on ID`);
     // res.send(showData);
     // console.log(showData);
-    res.render("show.ejs", { listing });
+    res.render("listings/show.ejs", { listing });
 })
 
 //Create Route
@@ -69,6 +69,17 @@ app.post("/listing", async (req, res)=>{
     await newListing.save().then((res)=>{console.log(res)})
     .catch((err)=>{console.log(err)});
     res.redirect("/listing");
+})
+
+
+//Edit Route
+app.get("/listing/:id/edit", async (req, res)=>{
+    let { id }= req.params;
+    // console.log(`Edit request by: ${id}`);
+    let editListing= await Listing.findById(id);
+    console.log(editListing);
+    // res.send(`Edit request by: ${id}`);
+    res.render("listings/edit.ejs", { editListing });
 })
 
 app.listen(port, ()=>{
