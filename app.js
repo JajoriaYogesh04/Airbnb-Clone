@@ -14,6 +14,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
+app.use(express.static(path.join(__dirname, "public")));
 
 async function main(){
     await mongoose.connect(mongoose_url); 
