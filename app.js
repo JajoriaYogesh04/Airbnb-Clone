@@ -1,5 +1,6 @@
 const express= require("express");
 const mongoose= require("mongoose");
+const methodOverride= require("method-override");
 const app= express();
 const port= 8080;
 const mongoose_url= "mongodb://127.0.0.1:27017/wanderlust";
@@ -9,6 +10,7 @@ const path= require("path");
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 async function main(){
     await mongoose.connect(mongoose_url); 
@@ -80,6 +82,16 @@ app.get("/listing/:id/edit", async (req, res)=>{
     console.log(editListing);
     // res.send(`Edit request by: ${id}`);
     res.render("listings/edit.ejs", { editListing });
+})
+
+//Update Route
+app.put("/listing/:id", async (req, res)=>{
+    let { id }= req.params;
+    let editRequest= {...req.body.listing};
+    // console.log(id);
+    // res.send(editRequest);
+    editedListing= await Listing.findByIdAndUpdate(id, editRequest, {new: true, runValidators: true})
+    res.redirect(`/listing/${id}`);
 })
 
 app.listen(port, ()=>{
