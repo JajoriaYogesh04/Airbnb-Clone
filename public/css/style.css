@@ -2,6 +2,9 @@
     background-color: pink;
 } */
 
+
+/* NAVBAR */
+
 .navbar{
     height: 5rem;
     background-color: white;
@@ -14,4 +17,44 @@
 
 .nav-link{
     color: #222222 !important;
+}
+
+
+/* FOOTER */
+
+.f-info-tnc a{
+    text-decoration: none;
+}
+
+.f-info-tnc a:hover{
+    text-decoration: underline;
+}
+
+.f-info{
+    background-color: rgb(246, 255, 0);
+    height: 8rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-evenly;
+    text-align: center;
+}
+
+.f-info-social{
+    width: 100%;
+    
+}
+
+.f-info-social i{
+    font-size: 1.7rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.f-info-brand{
+    width: 100%;
+}
+
+.f-info-tnc{
+    width: 100%;
 }
