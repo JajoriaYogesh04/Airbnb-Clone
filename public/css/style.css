@@ -1,6 +1,10 @@
-/* body{
-    background-color: pink;
-} */
+
+body{
+    background-color: rgb(255, 255, 255);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
 
 
 /* NAVBAR */
@@ -31,13 +35,14 @@
 }
 
 .f-info{
-    background-color: rgb(246, 255, 0);
+    background-color: #faf9f9;
     height: 8rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-content: space-evenly;
     text-align: center;
+    border-top: 1px solid #DDDDDD;
 }
 
 .f-info-social{
@@ -57,4 +62,37 @@
 
 .f-info-tnc{
     width: 100%;
+}
+
+
+/* CARD */
+
+.card{
+    border: none;
+    margin-bottom: 2rem;
+
+}
+
+.card-img-top{
+    border-radius: 1rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+.card-body{
+    padding: 0;
+    font-weight: 400;
+}
+
+.card-link{
+    text-decoration: none;
+}
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover{
+    opacity: 0.3;
+    background-color: white;
 }
