@@ -118,3 +118,24 @@ body{
     background-color: #ff385c;
     border: none;
 }
+
+
+/* SHOW LISTING PAGE */
+
+.show-img{
+    height: 30vh;
+}
+
+.edit-button{
+    background-color: #ff385c;
+    color: white;
+}
+
+.edit-delete-btn{
+    display: flex;
+}
+
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
+}
