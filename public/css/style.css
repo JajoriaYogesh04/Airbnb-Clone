@@ -103,7 +103,18 @@ body{
     background-color: white;
 }
 
+
+/* NEW LISTING PAGE */
+
 .btn-add{
     background-color: #ff385c !important;
     color: white;
+}
+
+
+/* EDIT LISTING PAGE */
+
+.edit-submit-btn{
+    background-color: #ff385c;
+    border: none;
 }
