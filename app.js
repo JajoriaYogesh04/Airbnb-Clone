@@ -26,6 +26,27 @@ async function main(){
 main().then(()=>{console.log("Connected to Mongoose")})
 .catch((err)=>{console.log(err)});
 
+// const validateListing= (req, res, next)=>{
+//     let {error} = listingSchema.validate(req.body);
+//     console.log(error);
+//     if(error){
+//         let errMsg= error.details.map((el)=>{el.message}).join(", ");
+//         throw new ExpressError(400, errMsg); 
+//     }else{
+//         next();
+//     }
+// }
+const validateListing = (req, res, next) => {
+    const { error } = listingSchema.validate(req.body);
+    console.log(error);
+    if (error) {
+        const errMsg = error.details.map(el => el.message).join(", ");
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+};
+
 // app.get("/testListing", async (req, res)=>{
 //     let sampleListing= new Listing({
 //         title: "My New Villa",
@@ -69,13 +90,8 @@ app.get("/listing/:id", wrapAsync(async (req, res)=>{
 })) 
 
 //Create Route
-app.post("/listing",wrapAsync(async (req, res, next)=>{
+app.post("/listing", validateListing,wrapAsync(async (req, res, next)=>{
     let listing = req.body.listing;
-    let result = listingSchema.validate(req.body);
-    console.log(result);
-    if(result.error){
-        throw new ExpressError(400, result.error);
-    }
     // console.log(listing);
     // res.send(req.body.listing);
     // console.log(listing);
