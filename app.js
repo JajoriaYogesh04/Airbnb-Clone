@@ -77,6 +77,21 @@ app.post("/listing",wrapAsync(async (req, res, next)=>{
         throw new ExpressError(400, "Send Valid Data For Listing");
     }
     let newListing= new Listing(listing);
+    if(!newListing.title){
+        throw new ExpressError(400, "Send Valid Title For Listing");
+    }
+    if(!newListing.description){
+        throw new ExpressError(400, "Send Valid Description For Listing");
+    }
+    if(!newListing.price){
+        throw new ExpressError(400, "Send Valid Price For Listing");
+    }
+    if(!newListing.location){
+        throw new ExpressError(400, "Send Valid Location For Listing");
+    }
+    if(!newListing.country){
+        throw new ExpressError(400, "Send Valid Country For Listing");
+    }
     await newListing.save()
     res.redirect("/listing");   
 })
@@ -117,7 +132,7 @@ app.delete("/listing/:id", wrapAsync(async (req, res)=>{
 app.all("*",(req, res, next)=>{
     next(new ExpressError(404, "Page Not Found!"));
 })
-
+ 
 // app.use((err, req, res, next)=>{
 //     // res.send(err.message);
 //     res.send("Something went WRONG");
