@@ -66,15 +66,19 @@ app.get("/listing/:id", async (req, res)=>{
 })
 
 //Create Route
-app.post("/listing", async (req, res)=>{
-    let listing = req.body.listing;
-    // console.log(listing);
-    // res.send(req.body.listing);
-    // console.log(listing);
-    let newListing= new Listing(listing);
-    await newListing.save().then((res)=>{console.log(res)})
-    .catch((err)=>{console.log(err)});
-    res.redirect("/listing");
+app.post("/listing", async (req, res, next)=>{
+    try{
+        let listing = req.body.listing;
+        // console.log(listing);
+        // res.send(req.body.listing);
+        // console.log(listing);
+        let newListing= new Listing(listing);
+        await newListing.save()
+        res.redirect("/listing");   
+    }
+    catch(err){
+        return next(err);
+    }
 })
 
 
@@ -105,6 +109,10 @@ app.delete("/listing/:id", async (req, res)=>{
     let deletedListing= await Listing.findByIdAndDelete(id);
     res.redirect("/listing");
     console.log(deletedListing);
+})
+
+app.use((err, req, res, next)=>{
+    res.send(err.message);
 })
 
 app.listen(port, ()=>{
