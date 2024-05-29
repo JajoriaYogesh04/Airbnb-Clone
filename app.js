@@ -8,7 +8,8 @@ const port= 8080;
 const mongoose_url= "mongodb://127.0.0.1:27017/wanderlust";
 const Listing= require("./models/listing.js");
 const path= require("path");
-const wrapAsync= require("./utils/wrapAsync.js")
+const wrapAsync= require("./utils/wrapAsync.js");
+const ExpressError= require("./utils/expressError.js");
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -44,10 +45,10 @@ app.get("/", (req, res)=>{
 })
 
 //Index Route
-app.get("/listing", async (req, res)=>{
+app.get("/listing", wrapAsync(async (req, res)=>{
     const allListing= await Listing.find({});
     res.render("listings/index.ejs", { allListing });
-})
+})) 
 
 //New Route
 app.get("/listing/new", (req, res)=>{
@@ -57,14 +58,14 @@ app.get("/listing/new", (req, res)=>{
 })
 
 //Show Route
-app.get("/listing/:id", async (req, res)=>{
+app.get("/listing/:id", wrapAsync(async (req, res)=>{
     let {id} = req.params;
     const listing= await Listing.findById(id);
     console.log(`Show request on ID`);
     // res.send(showData);
     // console.log(showData);
     res.render("listings/show.ejs", { listing });
-})
+})) 
 
 //Create Route
 app.post("/listing",wrapAsync(async (req, res, next)=>{
@@ -72,6 +73,9 @@ app.post("/listing",wrapAsync(async (req, res, next)=>{
     // console.log(listing);
     // res.send(req.body.listing);
     // console.log(listing);
+    if(!listing){
+        throw new ExpressError(400, "Send Valid Data For Listing");
+    }
     let newListing= new Listing(listing);
     await newListing.save()
     res.redirect("/listing");   
@@ -79,37 +83,49 @@ app.post("/listing",wrapAsync(async (req, res, next)=>{
 ) 
 
 //Edit Route
-app.get("/listing/:id/edit", async (req, res)=>{
+app.get("/listing/:id/edit", wrapAsync(async (req, res)=>{
     let { id }= req.params;
     // console.log(`Edit request by: ${id}`);
     let editListing= await Listing.findById(id);
     console.log(editListing);
     // res.send(`Edit request by: ${id}`);
     res.render("listings/edit.ejs", { editListing });
-})
+}))
 
 //Update Route
-app.put("/listing/:id", async (req, res)=>{
+app.put("/listing/:id", wrapAsync(async (req, res)=>{
     let { id }= req.params;
     let editRequest= {...req.body.listing};
     // console.log(id);
     // res.send(editRequest);
+    if(!editRequest){
+        throw new ExpressError(400, "Send Valid Data For Listing");
+    }
     editedListing= await Listing.findByIdAndUpdate(id, editRequest, {new: true, runValidators: true})
     res.redirect(`/listing/${id}`);
-})
+})) 
 
 //Destroy Route
-app.delete("/listing/:id", async (req, res)=>{
+app.delete("/listing/:id", wrapAsync(async (req, res)=>{
     let { id }= req.params;
     // res.send(id);
     let deletedListing= await Listing.findByIdAndDelete(id);
     res.redirect("/listing");
     console.log(deletedListing);
+})) 
+
+app.all("*",(req, res, next)=>{
+    next(new ExpressError(404, "Page Not Found"));
 })
 
+// app.use((err, req, res, next)=>{
+//     // res.send(err.message);
+//     res.send("Something went WRONG");
+// })
+
 app.use((err, req, res, next)=>{
-    // res.send(err.message);
-    res.send("Something went WRONG");
+    let {statusCode=500, message="Something went WRONG"}= err;
+    res.status(statusCode).send(message);
 })
 
 app.listen(port, ()=>{
