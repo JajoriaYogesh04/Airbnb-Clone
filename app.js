@@ -10,6 +10,7 @@ const Listing= require("./models/listing.js");
 const path= require("path");
 const wrapAsync= require("./utils/wrapAsync.js");
 const ExpressError= require("./utils/expressError.js");
+const { listingSchema } = require("./schema.js");
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -70,32 +71,38 @@ app.get("/listing/:id", wrapAsync(async (req, res)=>{
 //Create Route
 app.post("/listing",wrapAsync(async (req, res, next)=>{
     let listing = req.body.listing;
+    let result = listingSchema.validate(req.body);
+    console.log(result);
+    if(result.error){
+        throw new ExpressError(400, result.error);
+    }
     // console.log(listing);
     // res.send(req.body.listing);
     // console.log(listing);
-    if(!listing){
-        throw new ExpressError(400, "Send Valid Data For Listing");
-    }
+    // if(!listing){
+    //     throw new ExpressError(400, "Send Valid Data For Listing");
+    // }
     let newListing= new Listing(listing);
-    if(!newListing.title){
-        throw new ExpressError(400, "Send Valid Title For Listing");
-    }
-    if(!newListing.description){
-        throw new ExpressError(400, "Send Valid Description For Listing");
-    }
-    if(!newListing.price){
-        throw new ExpressError(400, "Send Valid Price For Listing");
-    }
-    if(!newListing.location){
-        throw new ExpressError(400, "Send Valid Location For Listing");
-    }
-    if(!newListing.country){
-        throw new ExpressError(400, "Send Valid Country For Listing");
-    }
+    // if(!newListing.title){
+    //     throw new ExpressError(400, "Send Valid Title For Listing");
+    // }
+    // if(!newListing.description){
+    //     throw new ExpressError(400, "Send Valid Description For Listing");
+    // }
+    // if(!newListing.price){
+    //     throw new ExpressError(400, "Send Valid Price For Listing");
+    // }
+    // if(!newListing.location){
+    //     throw new ExpressError(400, "Send Valid Location For Listing");
+    // }
+    // if(!newListing.country){
+    //     throw new ExpressError(400, "Send Valid Country For Listing");
+    // }
     await newListing.save()
     res.redirect("/listing");   
 })
 ) 
+
 
 //Edit Route
 app.get("/listing/:id/edit", wrapAsync(async (req, res)=>{
