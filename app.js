@@ -8,6 +8,7 @@ const port= 8080;
 const mongoose_url= "mongodb://127.0.0.1:27017/wanderlust";
 const Listing= require("./models/listing.js");
 const path= require("path");
+const wrapAsync= require("./utils/wrapAsync.js")
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -66,21 +67,16 @@ app.get("/listing/:id", async (req, res)=>{
 })
 
 //Create Route
-app.post("/listing", async (req, res, next)=>{
-    try{
-        let listing = req.body.listing;
-        // console.log(listing);
-        // res.send(req.body.listing);
-        // console.log(listing);
-        let newListing= new Listing(listing);
-        await newListing.save()
-        res.redirect("/listing");   
-    }
-    catch(err){
-        return next(err);
-    }
+app.post("/listing",wrapAsync(async (req, res, next)=>{
+    let listing = req.body.listing;
+    // console.log(listing);
+    // res.send(req.body.listing);
+    // console.log(listing);
+    let newListing= new Listing(listing);
+    await newListing.save()
+    res.redirect("/listing");   
 })
-
+) 
 
 //Edit Route
 app.get("/listing/:id/edit", async (req, res)=>{
@@ -112,7 +108,8 @@ app.delete("/listing/:id", async (req, res)=>{
 })
 
 app.use((err, req, res, next)=>{
-    res.send(err.message);
+    // res.send(err.message);
+    res.send("Something went WRONG");
 })
 
 app.listen(port, ()=>{
