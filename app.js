@@ -44,7 +44,7 @@ const validateListing = (req, res, next) => {
         throw new ExpressError(400, errMsg);
     } else {
         next();
-    }
+    }   
 };
 
 // app.get("/testListing", async (req, res)=>{
@@ -131,7 +131,7 @@ app.get("/listing/:id/edit", wrapAsync(async (req, res)=>{
 }))
 
 //Update Route
-app.put("/listing/:id", wrapAsync(async (req, res)=>{
+app.put("/listing/:id", validateListing, wrapAsync(async (req, res)=>{
     let { id }= req.params;
     let editRequest= {...req.body.listing};
     // console.log(id);
@@ -171,3 +171,4 @@ app.use((err, req, res, next)=>{
 app.listen(port, ()=>{
     console.log("Listening to port 8080");
 })
+
