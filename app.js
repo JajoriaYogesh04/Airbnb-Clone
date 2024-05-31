@@ -10,7 +10,7 @@ const Listing= require("./models/listing.js");
 const path= require("path");
 const wrapAsync= require("./utils/wrapAsync.js");
 const ExpressError= require("./utils/expressError.js");
-const { listingSchema } = require("./schema.js");
+const { listingSchema, reviewSchema} = require("./schema.js");
 const Review= require("./models/review.js");
 
 app.set("views", path.join(__dirname, "/views"));
@@ -39,6 +39,17 @@ main().then(()=>{console.log("Connected to Mongoose")})
 // }
 const validateListing = (req, res, next) => {
     const { error } = listingSchema.validate(req.body);
+    console.log(error);
+    if (error) {
+        const errMsg = error.details.map(el => el.message).join(", ");
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }   
+};
+
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
     console.log(error);
     if (error) {
         const errMsg = error.details.map(el => el.message).join(", ");
@@ -91,7 +102,7 @@ app.get("/listing/:id", wrapAsync(async (req, res)=>{
 })) 
 
 //Create Route
-app.post("/listing", validateListing,wrapAsync(async (req, res, next)=>{
+app.post("/listing", validateListing, wrapAsync(async (req, res, next)=>{
     let listing = req.body.listing;
     // console.log(listing);
     // res.send(req.body.listing);
@@ -156,20 +167,22 @@ app.delete("/listing/:id", wrapAsync(async (req, res)=>{
 
 // REVIEWS
 // Post Route
-app.post("/listing/:id/reviews", async(req, res)=>{
-    let { id } = req.params;
-    // console.log(id);
-    let listing= await Listing.findById(id);
-    // console.log(listing);
-    let newReview= new Review(req.body.review);
-    // console.log(newReview);
-    listing.review.push(newReview);
-    await listing.save();
-    await newReview.save();
-    // res.send("New Review Saved");
-    console.log("New Review Saved");
-    res.redirect(`/listing/${id}`);
-})
+app.post("/listing/:id/reviews", validateReview, wrapAsync(
+    async(req, res)=>{
+        let { id } = req.params;
+        // console.log(id);
+        let listing= await Listing.findById(id);
+        // console.log(listing);
+        let newReview= new Review(req.body.review);
+        // console.log(newReview);
+        listing.review.push(newReview);
+        await listing.save();
+        await newReview.save();
+        // res.send("New Review Saved");
+        console.log("New Review Saved");
+        res.redirect(`/listing/${id}`);
+    }
+))
 
 
 app.all("*",(req, res, next)=>{
