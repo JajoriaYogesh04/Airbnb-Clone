@@ -7,7 +7,9 @@ const reviewSchema= new Schema({
         min: 0,
         max: 5,
     },
-    comment: String,
+    comment: {
+        type: String,
+    },
     date: {
         type: Date,
         default: Date.now(),

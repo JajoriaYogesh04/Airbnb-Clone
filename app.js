@@ -42,7 +42,7 @@ const validateListing = (req, res, next) => {
     console.log(error);
     if (error) {
         const errMsg = error.details.map(el => el.message).join(", ");
-        throw new ExpressError(400, errMsg);
+        return next(new ExpressError(400, errMsg));
     } else {
         next();
     }   
@@ -53,7 +53,7 @@ const validateReview = (req, res, next) => {
     console.log(error);
     if (error) {
         const errMsg = error.details.map(el => el.message).join(", ");
-        throw new ExpressError(400, errMsg);
+        return next(new ExpressError(400, errMsg));
     } else {
         next();
     }   
@@ -173,7 +173,9 @@ app.post("/listing/:id/reviews", validateReview, wrapAsync(
         // console.log(id);
         let listing= await Listing.findById(id);
         // console.log(listing);
-        let newReview= new Review(req.body.review);
+        let reviewBody = req.body.review;
+        console.log(reviewBody);
+        let newReview= new Review(reviewBody);
         // console.log(newReview);
         listing.review.push(newReview);
         await listing.save();

@@ -32,12 +32,12 @@
                 <h4>Leave a Review</h4>
                 <form action="/listing/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
                     <div class="rating mt-3 mb-3">
-                        <label for="range" class="form-label">Rating</label> 
-                        <input type="range" id="range" min="1" max="5" name="review[rating]" class="form-range">
+                        <label for="rating" class="form-label">Rating</label> 
+                        <input type="range" id="rating" min="1" max="5" name="review[rating]" class="form-range">
                     </div>
                     <div class="comment mt-3 mb-3">
                         <label for="comment" class="form-label">Comments</label>
-                        <textarea name="review[comment]" id="comment" rows="5" cols="" placeholder="write a comment..." class="form-control" required></textarea>
+                        <textarea name="review[comment]" id="comment" rows="5" placeholder="write a comment..." class="form-control" required></textarea>
                         <div class="valid-feedback">Comment looks good!</div>
                         <div class="invalid-feedback">Please write a comment</div>
                     </div>
