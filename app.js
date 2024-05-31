@@ -11,6 +11,7 @@ const path= require("path");
 const wrapAsync= require("./utils/wrapAsync.js");
 const ExpressError= require("./utils/expressError.js");
 const { listingSchema } = require("./schema.js");
+const Review= require("./models/review.js");
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -151,6 +152,25 @@ app.delete("/listing/:id", wrapAsync(async (req, res)=>{
     res.redirect("/listing");
     console.log(deletedListing);
 })) 
+
+
+// REVIEWS
+// Post Route
+app.post("/listing/:id/reviews", async(req, res)=>{
+    let { id } = req.params;
+    // console.log(id);
+    let listing= await Listing.findById(id);
+    // console.log(listing);
+    let newReview= new Review(req.body.review);
+    // console.log(newReview);
+    listing.review.push(newReview);
+    await listing.save();
+    await newReview.save();
+    // res.send("New Review Saved");
+    console.log("New Review Saved");
+    res.redirect(`/listing/${id}`);
+})
+
 
 app.all("*",(req, res, next)=>{
     next(new ExpressError(404, "Page Not Found!"));
