@@ -8,7 +8,7 @@ async function main(){
 }
 
 main().then((res)=>{console.log("Connected to Data.js")})
-.catch((err)=>{console.log(err)});
+.catch((err)=>{console.log(err)});  
 
 const initDB= async ()=>{
     await Listing.deleteMany({});
