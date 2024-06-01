@@ -73,7 +73,7 @@ body{
 
 /* CARD */
 
-.card{
+.listing-card{
     border: none;
     margin-bottom: 2rem;
 
@@ -138,4 +138,11 @@ body{
 .show-card{
     padding-left: 0;
     padding-right: 0;
+}
+
+
+/* REVIEW CARDS */
+.review-cards{
+    padding: 0;
+    margin: 0;
 }

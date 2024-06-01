@@ -50,7 +50,7 @@ const validateListing = (req, res, next) => {
 
 const validateReview = (req, res, next) => {
     const { error } = reviewSchema.validate(req.body);
-    console.log(error);
+    // console.log(error);
     if (error) {
         const errMsg = error.details.map(el => el.message).join(", ");
         return next(new ExpressError(400, errMsg));
@@ -94,7 +94,7 @@ app.get("/listing/new", (req, res)=>{
 //Show Route
 app.get("/listing/:id", wrapAsync(async (req, res)=>{
     let {id} = req.params;
-    const listing= await Listing.findById(id);
+    const listing= await Listing.findById(id).populate("review");
     console.log(`Show request on ID`);
     // res.send(showData);
     // console.log(showData);
