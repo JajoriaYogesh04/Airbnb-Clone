@@ -4,13 +4,18 @@ const users= require("./routes/users");
 const posts= require("./routes/posts");
 const cookieParser= require("cookie-parser");
 
-app.use(cookieParser());
+app.use(cookieParser("secretcode"));
 
 app.get("/getcookies", (req, res)=>{
     res.cookie("Country", "India");
     res.cookie("State", "Rajasthan");
     res.cookie("City", "Jaipur");
     res.send("GET COOKIES");
+})
+
+app.get("/getsignedcookies", (req, res)=>{
+    res.cookie("made-in", "india", {signed: true});
+    res.send("GET SIGNED COOKIE");
 })
 
 app.get("/", (req, res)=>{
