@@ -14,7 +14,7 @@ const ExpressError= require("./utils/expressError.js");
 // const Review= require("./models/review.js");
 
 const listings= require("./routes/listing.js")
-const Reviews= require("./routes/review.js")
+const reviews= require("./routes/review.js")
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -51,7 +51,7 @@ app.get("/", (req, res)=>{
 
 app.use("/listing", listings);
 
-app.use("/listing/:id/reviews", Reviews);
+app.use("/listing/:id/reviews", reviews);
 
 
 app.all("*",(req, res, next)=>{
