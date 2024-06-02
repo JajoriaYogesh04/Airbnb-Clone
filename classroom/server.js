@@ -18,6 +18,11 @@ app.get("/getsignedcookies", (req, res)=>{
     res.send("GET SIGNED COOKIE");
 })
 
+app.get("/verify", (req, res)=>{
+    console.log(req.signedCookies);
+    res.send("VERIFY");
+})
+
 app.get("/", (req, res)=>{
     res.send("GET request to root");
     console.log("GET request to root");
