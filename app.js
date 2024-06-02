@@ -6,13 +6,15 @@ const ejsMate= require("ejs-mate");
 const app= express();
 const port= 8080;
 const mongoose_url= "mongodb://127.0.0.1:27017/wanderlust";
-const Listing= require("./models/listing.js");
+// const Listing= require("./models/listing.js");
 const path= require("path");
-const wrapAsync= require("./utils/wrapAsync.js");
+// const wrapAsync= require("./utils/wrapAsync.js");
 const ExpressError= require("./utils/expressError.js");
-const { listingSchema, reviewSchema} = require("./schema.js");
-const Review= require("./models/review.js");
+// const { listingSchema, reviewSchema} = require("./schema.js");
+// const Review= require("./models/review.js");
+
 const listings= require("./routes/listing.js")
+const Reviews= require("./routes/review.js")
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -28,80 +30,28 @@ async function main(){
 main().then(()=>{console.log("Connected to Mongoose")})
 .catch((err)=>{console.log(err)});
 
-// const validateListing= (req, res, next)=>{
-//     let {error} = listingSchema.validate(req.body);
-//     console.log(error);
-//     if(error){
-//         let errMsg= error.details.map((el)=>{el.message}).join(", ");
-//         throw new ExpressError(400, errMsg); 
-//     }else{
-//         next();
-//     }
-// }
-const validateListing = (req, res, next) => {
-    const { error } = listingSchema.validate(req.body);
-    console.log(error);
-    if (error) {
-        const errMsg = error.details.map(el => el.message).join(", ");
-        return next(new ExpressError(400, errMsg));
-    } else {
-        next();
-    }   
-};
-
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    // console.log(error);
-    if (error) {
-        const errMsg = error.details.map(el => el.message).join(", ");
-        return next(new ExpressError(400, errMsg));
-    } else {
-        next();
-    }   
-};
-
-app.use("/listing", listings);
-
 //Set up
 app.get("/", (req, res)=>{
     console.log("Index Route Successfully");
     res.send("Index Route Successfully");
 })
 
-// REVIEWS
-// Post Review Route
-app.post("/listing/:id/reviews", validateReview, wrapAsync(
-    async(req, res)=>{
-        let { id } = req.params;
-        // console.log(id);
-        let listing= await Listing.findById(id);
-        // console.log(listing);
-        let reviewBody = req.body.review;
-        console.log(reviewBody);
-        let newReview= new Review(reviewBody);
-        // console.log(newReview);
-        listing.review.push(newReview);
-        await listing.save();
-        await newReview.save();
-        // res.send("New Review Saved");
-        console.log("New Review Saved");
-        res.redirect(`/listing/${id}`);
-    }
-))
+// app.get("/testListing", async (req, res)=>{
+//     let sampleListing= new Listing({
+//         title: "My New Villa",
+//         description: "By the Beach",
+//         price: 1200,
+//         location: "Calangute, Goa",
+//         country: "India",
+//     })
+//     await sampleListing.save().then((res)=>{console.log(res)})
+//     .catch((err)=>{console.log(err)});
+//     res.send("Listing Test Successfully");
+// })
 
-// Delete Review Route
-app.delete("/listing/:id/reviews/:reviewId", wrapAsync(
-    async(req, res)=>{
-        let {id, reviewId}= req.params;
-        // console.log(id);
-        // console.log(reviewId);
-        let deleteReview= await Review.findByIdAndDelete(reviewId);
-        let reviewListing= await Listing.findByIdAndUpdate(id, {$pull: {review: reviewId}});
-        console.log(deleteReview);
-        console.log(reviewListing);
-        res.redirect(`/listing/${id}`);
-    }
-))
+app.use("/listing", listings);
+
+app.use("/listing/:id/reviews", Reviews);
 
 
 app.all("*",(req, res, next)=>{
