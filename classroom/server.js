@@ -8,6 +8,13 @@ app.get("/", (req, res)=>{
     console.log("GET request to root");
 })
 
+app.get("/getcookies", (req, res)=>{
+    res.cookie("Country", "India");
+    res.cookie("State", "Rajasthan");
+    res.cookie("City", "Jaipur");
+    res.send("hello");
+})
+
 app.use("/users", users);
 
 app.use("/posts", posts);
