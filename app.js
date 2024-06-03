@@ -17,6 +17,7 @@ const listings= require("./routes/listing.js")
 const reviews= require("./routes/review.js")
 
 const session= require("express-session");
+const flash= require("connect-flash");
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -36,6 +37,7 @@ const sessionOptions= {
     }
 };
 app.use(session(sessionOptions));
+app.use(flash());
 
 async function main(){
     await mongoose.connect(mongoose_url); 
@@ -62,6 +64,11 @@ app.get("/", (req, res)=>{
 //     .catch((err)=>{console.log(err)});
 //     res.send("Listing Test Successfully");
 // })
+
+app.use((req, res, next)=>{
+    res.locals.success= req.flash("success");
+    next();
+})
 
 app.use("/listing", listings);
 
