@@ -39,20 +39,35 @@ const session= require("express-session");
 
 // app.use("/posts", posts);
 
-app.use(session({secret: "mySecretString", resave: false, saveUninitialized: true}));
+const sessionOptions= {
+    secret: "mySecretString", 
+    resave: false, 
+    saveUninitialized: true
+}
 
-app.get("/test",(req, res)=>{
-    res.send("Test Successful!");
+app.use(session(sessionOptions));
+
+// app.get("/test",(req, res)=>{
+//     res.send("Test Successful!");
+// })
+
+// app.get("/reqcount", (req, res)=>{
+//     if(req.session.count){
+//         req.session.count++;
+//     }
+//     else{
+//         req.session.count= 1;
+//     }
+//     res.send(`Your request count is: ${req.session.count} times`);
+// })
+
+app.get("/register", (req, res)=>{
+    let {name="Anonymous"}= req.query;
+    req.session.name= name;
+    res.send(`Registered Name: ${req.session.name}`);
 })
-
-app.get("/reqcount", (req, res)=>{
-    if(req.session.count){
-        req.session.count++;
-    }
-    else{
-        req.session.count= 1;
-    }
-    res.send(`Your request count is: ${req.session.count} times`);
+app.get("/hello", (req, res)=>{
+    res.send(`Hello ${req.session.name}`);
 })
 
 app.listen(3000, ()=>{
