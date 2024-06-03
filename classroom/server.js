@@ -4,6 +4,10 @@ const app= express();
 // const posts= require("./routes/posts");
 // const cookieParser= require("cookie-parser");
 const session= require("express-session");
+const flash= require("connect-flash");
+const path= require("path");
+app.set("views", path.join(__dirname, "/views"));
+app.set("view engine", "ejs");
 
 // app.use(cookieParser("secretcode"));
 
@@ -46,6 +50,7 @@ const sessionOptions= {
 }
 
 app.use(session(sessionOptions));
+app.use(flash());
 
 // app.get("/test",(req, res)=>{
 //     res.send("Test Successful!");
@@ -64,10 +69,16 @@ app.use(session(sessionOptions));
 app.get("/register", (req, res)=>{
     let {name="Anonymous"}= req.query;
     req.session.name= name;
-    res.send(`Registered Name: ${req.session.name}`);
+    // res.send(`Registered Name: ${req.session.name}`);
+    console.log(req.session);
+    req.flash("register", "User Registered Successfully");
+    res.redirect("/hello");
+
 })
 app.get("/hello", (req, res)=>{
-    res.send(`Hello ${req.session.name}`);
+    console.log(req.session);
+    // res.send(`Hello ${req.session.name}`);
+    res.render("hello.ejs", {name: req.session.name, msg: req.flash("register")});
 })
 
 app.listen(3000, ()=>{
