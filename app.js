@@ -16,12 +16,21 @@ const ExpressError= require("./utils/expressError.js");
 const listings= require("./routes/listing.js")
 const reviews= require("./routes/review.js")
 
+const session= require("express-session");
+
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
+
+const sessionOptions= {
+    secret: "mysecretcode",
+    resave: false,
+    saveUninitialized: true,
+};
+app.use(session(sessionOptions));
 
 async function main(){
     await mongoose.connect(mongoose_url); 
