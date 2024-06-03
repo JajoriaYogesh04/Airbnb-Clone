@@ -94,6 +94,7 @@ router.get("/:id/edit", wrapAsync(async (req, res)=>{
 
 //Update Route
 router.put("/:id", validateListing, wrapAsync(async (req, res)=>{
+    req.flash("success", "Listing Updated!");
     let { id }= req.params;
     let editRequest= {...req.body.listing};
     // console.log(id);
@@ -107,6 +108,7 @@ router.put("/:id", validateListing, wrapAsync(async (req, res)=>{
 
 //Destroy Route
 router.delete("/:id", wrapAsync(async (req, res)=>{
+    req.flash("success", "Listing Deleted!");
     let { id }= req.params;
     // res.send(id);
     let deletedListing= await Listing.findByIdAndDelete(id);

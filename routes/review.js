@@ -21,6 +21,7 @@ const validateReview = (req, res, next) => {
 // Post Review Route
 router.post("/", validateReview, wrapAsync(
     async(req, res)=>{
+        req.flash("success", "Review Submitted!");
         let { id } = req.params;
         // console.log(id);
         let listing= await Listing.findById(id);
@@ -41,6 +42,7 @@ router.post("/", validateReview, wrapAsync(
 // Delete Review Route
 router.delete("/:reviewId", wrapAsync(
     async(req, res)=>{
+        req.flash("success", "Review Deleted!");
         let {id, reviewId}= req.params;
         // console.log(id);
         // console.log(reviewId);
