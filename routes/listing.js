@@ -44,6 +44,10 @@ router.get("/new", (req, res)=>{
 router.get("/:id", wrapAsync(async (req, res)=>{
     let {id} = req.params;
     const listing= await Listing.findById(id).populate("review");
+    if(!listing){
+        req.flash("error", "Listing does not exist");
+        res.redirect("/listing")
+    }
     console.log(`Show request on ID`);
     // res.send(showData);
     // console.log(showData);

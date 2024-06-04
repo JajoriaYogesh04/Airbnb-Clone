@@ -68,6 +68,7 @@ app.get("/", (req, res)=>{
 app.use((req, res, next)=>{
     res.locals.success= req.flash("success");
     // console.log(res.locals);
+    res.locals.error= req.flash("error");
     next();
 })
 
