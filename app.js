@@ -13,8 +13,9 @@ const ExpressError= require("./utils/expressError.js");
 // const { listingSchema, reviewSchema} = require("./schema.js");
 // const Review= require("./models/review.js");
 
-const listings= require("./routes/listing.js")
-const reviews= require("./routes/review.js")
+const listingsRouter= require("./routes/listing.js")
+const reviewsRouter= require("./routes/review.js")
+const usersRouter= require("./routes/user.js");
 
 const session= require("express-session");
 const flash= require("connect-flash");
@@ -92,10 +93,11 @@ app.get("/demouser", async (req, res)=>{
     res.send(registeredUser);
 })
 
-app.use("/listing", listings);
+app.use("/listing", listingsRouter);
 
-app.use("/listing/:id/reviews", reviews);
+app.use("/listing/:id/reviews", reviewsRouter);
 
+app.use("/", usersRouter);
 
 app.all("*",(req, res, next)=>{
     next(new ExpressError(404, "Page Not Found!"));
