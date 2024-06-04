@@ -19,6 +19,10 @@ const reviews= require("./routes/review.js")
 const session= require("express-session");
 const flash= require("connect-flash");
 
+const User= require("./models/user.js");
+const passport= require("passport");
+const LocalStrategy= require("passport-local");
+
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
@@ -38,6 +42,12 @@ const sessionOptions= {
 };
 app.use(session(sessionOptions));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser())
 
 async function main(){
     await mongoose.connect(mongoose_url); 
