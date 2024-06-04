@@ -25,10 +25,6 @@ router.post("/", validateReview, wrapAsync(
         let { id } = req.params;
         // console.log(id);
         let listing= await Listing.findById(id);
-        if(!listing){
-            req.flash("error", "Listing does not exist");
-            res.redirect("/listing");
-        }
         // console.log(listing);
         let reviewBody = req.body.review;
         console.log(reviewBody);
