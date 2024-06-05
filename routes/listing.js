@@ -61,7 +61,7 @@ router.get("/:id", wrapAsync(async (req, res)=>{
 })) 
 
 //Create Route
-router.post("/", validateListing, wrapAsync(async (req, res, next)=>{
+router.post("/", validateListing, isLoggedIn, wrapAsync(async (req, res, next)=>{
     req.flash("success", "New Listing Created!");
     let listing = req.body.listing;
     // console.log(listing);
@@ -93,7 +93,7 @@ router.post("/", validateListing, wrapAsync(async (req, res, next)=>{
 
 
 //Edit Route
-router.get("/:id/edit", wrapAsync(async (req, res)=>{
+router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res)=>{
     let { id }= req.params;
     // console.log(`Edit request by: ${id}`);
     let editListing= await Listing.findById(id);
@@ -107,7 +107,7 @@ router.get("/:id/edit", wrapAsync(async (req, res)=>{
 }))
 
 //Update Route
-router.put("/:id", validateListing, wrapAsync(async (req, res)=>{
+router.put("/:id", validateListing, isLoggedIn, wrapAsync(async (req, res)=>{
     req.flash("success", "Listing Updated!");
     let { id }= req.params;
     let editRequest= {...req.body.listing};
@@ -121,7 +121,7 @@ router.put("/:id", validateListing, wrapAsync(async (req, res)=>{
 })) 
 
 //Destroy Route
-router.delete("/:id", wrapAsync(async (req, res)=>{
+router.delete("/:id", isLoggedIn, wrapAsync(async (req, res)=>{
     req.flash("success", "Listing Deleted!");
     let { id }= req.params;
     // res.send(id);
