@@ -5,6 +5,7 @@ const wrapAsync= require("../utils/wrapAsync.js");
 const ExpressError= require("../utils/expressError.js");
 const { listingSchema, reviewSchema} = require("../schema.js");
 // const passport= require('passport');
+const { isLoggedIn }= require("../middleware.js"); 
 
 
 // const validateListing= (req, res, next)=>{
@@ -35,12 +36,12 @@ router.get("/", wrapAsync(async (req, res)=>{
 })) 
 
 //New Route
-router.get("/new", (req, res)=>{
+router.get("/new", isLoggedIn, (req, res)=>{
     console.log("Getting New Request");
-    if(!req.isAuthenticated()){
-        req.flash("error", "Please Login to continue...");
-        res.redirect("/login");
-    }
+    // if(!req.isAuthenticated()){
+    //     req.flash("error", "Please Login to continue...");
+    //     res.redirect("/login");
+    // }
     // res.send("Getting New Request");
     res.render("listings/new.ejs");
 })
