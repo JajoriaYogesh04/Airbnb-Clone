@@ -3,7 +3,7 @@ const isLoggedIn= (req, res, next)=>{
         req.flash("error", "Please Login to continue...");
         res.redirect("/login");
     }
-    next();
+    next(); 
 }
 
 module.exports= { isLoggedIn };
