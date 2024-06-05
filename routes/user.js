@@ -17,7 +17,7 @@ router.post("/signup", wrapAsync(async (req, res)=>{
             email: email,
         });
         let registeredUser= await User.register(newUser, password);
-        console.log(registeredUser);
+        // console.log(registeredUser);
         req.flash("success", `Sign Up Successfully: Welcome to WanderLust ${username}`);
         res.redirect("/listing");
     }
@@ -41,10 +41,10 @@ router.post("/login", passport.authenticate('local', {failureRedirect: "/login",
 
 
 // LOGOUT
-router.get("/logout", (req, res, next0)=>{
+router.get("/logout", (req, res, next)=>{
     req.logout((err)=>{
         if(err){
-            next(err);
+            return next(err);
         }
         req.flash("success", "You Logged Out!")
         res.redirect("/listing");
