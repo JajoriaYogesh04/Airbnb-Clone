@@ -71,6 +71,7 @@ router.post("/", validateListing, isLoggedIn, wrapAsync(async (req, res, next)=>
     //     throw new ExpressError(400, "Send Valid Data For Listing");
     // }
     let newListing= new Listing(listing);
+    newListing.owner= req.user._id;
     // if(!newListing.title){
     //     throw new ExpressError(400, "Send Valid Title For Listing");
     // }

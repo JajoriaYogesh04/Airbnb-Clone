@@ -1,5 +1,5 @@
 const isLoggedIn= (req, res, next)=>{
-    // console.log(req.user)
+    console.log(req.user)
     if(!req.isAuthenticated()){
         req.session.redirectUrl= req.originalUrl;        // Save redirect URL
         req.flash("error", "Please Login to continue...");
