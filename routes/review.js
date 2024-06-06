@@ -17,6 +17,7 @@ router.post("/", isLoggedIn, validateReview, wrapAsync(
         let listing= await Listing.findById(id);
         // console.log(listing);
         let reviewBody = req.body.review;
+        reviewBody.author= req.user._id;
         console.log(reviewBody);
         let newReview= new Review(reviewBody);
         // console.log(newReview);

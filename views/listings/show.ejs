@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="edit-delete-button">
-                    
+                    <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
                     <div class="row">
                         <form class="col-1" action="/listing/<%=listing._id%>/edit" method="GET">
                             <button class="btn edit-button">&nbsp;&nbsp;&nbsp;&nbsp;EDIT&nbsp;&nbsp;&nbsp;&nbsp;</button>
@@ -23,7 +23,7 @@
                             <button class="btn btn-dark">DELETE</button>
                         </form>
                     </div>
-
+                    <% } %>
                 </div>
             </div>
             <div class="reviews mt-3">
@@ -48,8 +48,9 @@
                         <li><%= review.comment %>, <%= review.rating %> star</li>
                     <% } %> -->
                 </ul>
-                <hr>
             </div>
+            <% if(currUser){ %>
+            <hr>
             <div class="review-form mt-3 mb-3 col-8 offset-2">
                 <h4>Leave a Review</h4>
                 <form action="/listing/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
@@ -68,6 +69,7 @@
                     </div>
                 </form>
             </div>
+            <% } %>
         </div>
         
     </body>
