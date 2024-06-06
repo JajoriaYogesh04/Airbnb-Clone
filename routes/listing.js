@@ -5,7 +5,7 @@ const wrapAsync= require("../utils/wrapAsync.js");
 const ExpressError= require("../utils/expressError.js");
 const { listingSchema, reviewSchema} = require("../schema.js");
 // const passport= require('passport');
-const { isLoggedIn }= require("../middleware.js"); 
+const { isLoggedIn, isOwner }= require("../middleware.js"); 
 
 
 // const validateListing= (req, res, next)=>{
@@ -94,8 +94,13 @@ router.post("/", validateListing, isLoggedIn, wrapAsync(async (req, res, next)=>
 
 
 //Edit Route
-router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res)=>{
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(async (req, res)=>{
     let { id }= req.params;
+    // let listing= await Listing.findById(id);
+    // if(!res.locals.currUser._id.equals(listing.owner._id)){
+    //     req.flash("error", "Authorization Error: You are not the owner of this listings");
+    //     res.redirect("/listing");
+    // }
     // console.log(`Edit request by: ${id}`);
     let editListing= await Listing.findById(id);
     if(!editListing){
@@ -108,7 +113,7 @@ router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res)=>{
 }))
 
 //Update Route
-router.put("/:id", validateListing, isLoggedIn, wrapAsync(async (req, res)=>{
+router.put("/:id", validateListing, isLoggedIn, isOwner, wrapAsync(async (req, res)=>{
     req.flash("success", "Listing Updated!");
     let { id }= req.params;
     let editRequest= {...req.body.listing};
@@ -122,7 +127,7 @@ router.put("/:id", validateListing, isLoggedIn, wrapAsync(async (req, res)=>{
 })) 
 
 //Destroy Route
-router.delete("/:id", isLoggedIn, wrapAsync(async (req, res)=>{
+router.delete("/:id", isLoggedIn, isOwner, wrapAsync(async (req, res)=>{
     req.flash("success", "Listing Deleted!");
     let { id }= req.params;
     // res.send(id);
