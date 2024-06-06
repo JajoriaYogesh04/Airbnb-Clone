@@ -5,29 +5,8 @@ const wrapAsync= require("../utils/wrapAsync.js");
 const ExpressError= require("../utils/expressError.js");
 const { listingSchema, reviewSchema} = require("../schema.js");
 // const passport= require('passport');
-const { isLoggedIn, isOwner }= require("../middleware.js"); 
+const { isLoggedIn, isOwner, validateListing }= require("../middleware.js"); 
 
-
-// const validateListing= (req, res, next)=>{
-//     let {error} = listingSchema.validate(req.body);
-//     console.log(error);
-//     if(error){
-//         let errMsg= error.details.map((el)=>{el.message}).join(", ");
-//         throw new ExpressError(400, errMsg); 
-//     }else{
-//         next();
-//     }
-// }
-const validateListing = (req, res, next) => {
-    const { error } = listingSchema.validate(req.body);
-    // console.log(error);
-    if (error) {
-        const errMsg = error.details.map(el => el.message).join(", ");
-        return next(new ExpressError(400, errMsg));
-    } else {
-        next();
-    }   
-};
 
 //Index Route
 router.get("/", wrapAsync(async (req, res)=>{

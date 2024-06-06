@@ -5,18 +5,7 @@ const wrapAsync= require("../utils/wrapAsync.js");
 const ExpressError= require("../utils/expressError.js");
 const { reviewSchema} = require("../schema.js");
 const Review= require("../models/review.js");
-const { isLoggedIn }= require("../middleware.js"); 
-
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    // console.log(error);
-    if (error) {
-        const errMsg = error.details.map(el => el.message).join(", ");
-        return next(new ExpressError(400, errMsg));
-    } else {
-        next();
-    }   
-};
+const { isLoggedIn, validateReview }= require("../middleware.js"); 
 
 // REVIEWS
 // Post Review Route
