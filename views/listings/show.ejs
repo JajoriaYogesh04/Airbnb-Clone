@@ -6,7 +6,7 @@
                 <div class="card listing-card">
                     <img src="<%= listing.image %>" class="card-img-top show-img" alt="show_image">
                     <div class="card-body">
-                        <p class="card-text"><i><%= listing.owner.username %></i></p>
+                        <p class="card-text"><i>Owned by: <%= listing.owner.username %></i></p>
                         <p class="card-text"><%= listing.description %><br></p>
                         <p class="card-text">&#8377; <%= listing.price.toLocaleString("en-IN") %></p>
                         <p class="card-text"><%= listing.country %></p>
@@ -14,15 +14,16 @@
                     </div>
                 </div>
                 <div class="edit-delete-button">
+                    <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
                     <div class="row">
                         <form class="col-1" action="/listing/<%=listing._id%>/edit" method="GET">
                             <button class="btn edit-button">&nbsp;&nbsp;&nbsp;&nbsp;EDIT&nbsp;&nbsp;&nbsp;&nbsp;</button>
                         </form>
-                        <!-- <a href="/listing/<%=listing._id%>/edit">EDIT</a> -->
                         <form class="col-1 offset-1" action="/listing/<%=listing._id%>?_method=DELETE" method="POST">
                             <button class="btn btn-dark">DELETE</button>
                         </form>
                     </div>
+                    <% } %>
                 </div>
             </div>
             <div class="reviews mt-3">
