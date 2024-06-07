@@ -5,7 +5,7 @@ const wrapAsync= require("../utils/wrapAsync.js");
 const ExpressError= require("../utils/expressError.js");
 const { reviewSchema} = require("../schema.js");
 const Review= require("../models/review.js");
-const { isLoggedIn, validateReview }= require("../middleware.js"); 
+const { isLoggedIn, validateReview, isReviewAuthor }= require("../middleware.js"); 
 
 // REVIEWS
 // Post Review Route
@@ -31,7 +31,7 @@ router.post("/", isLoggedIn, validateReview, wrapAsync(
 ))
 
 // Delete Review Route
-router.delete("/:reviewId", isLoggedIn, wrapAsync(
+router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(
     async(req, res)=>{
         req.flash("success", "Review Deleted!");
         let {id, reviewId}= req.params;
