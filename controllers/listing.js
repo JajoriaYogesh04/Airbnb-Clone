@@ -38,6 +38,8 @@ module.exports.showListing= wrapAsync(async (req, res)=>{
 })
 
 module.exports.createListing= wrapAsync(async (req, res, next)=>{
+    let url= req.file.path;
+    let filename= req.file.filename;
     req.flash("success", "New Listing Created!");
     let listing = req.body.listing;
     // console.log(listing);
@@ -63,6 +65,7 @@ module.exports.createListing= wrapAsync(async (req, res, next)=>{
     // if(!newListing.country){
     //     throw new ExpressError(400, "Send Valid Country For Listing");
     // }
+    newListing.image= { url, filename };
     await newListing.save()
     res.redirect("/listing");   
 })
