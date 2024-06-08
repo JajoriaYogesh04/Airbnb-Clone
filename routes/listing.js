@@ -17,7 +17,7 @@ router.route("/")
     .get(listingControllers.index) 
     .post(upload.single('listing[image]'), validateListing, isLoggedIn, listingControllers.createListing);
     // .post(upload.single('listing[image]'), (req, res)=>{
-    //     // res.send(req.body);      
+    //     // res.send(req.body);         
     //     res.send(req.file)
     // }) 
 
