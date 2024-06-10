@@ -97,7 +97,13 @@ module.exports.updateListing= wrapAsync(async (req, res)=>{
     if(!editRequest){
         throw new ExpressError(400, "Send Valid Data For Listing");
     }
-    editedListing= await Listing.findByIdAndUpdate(id, editRequest, {new: true, runValidators: true})
+    listing= await Listing.findByIdAndUpdate(id, editRequest, {new: true, runValidators: true})
+    if(typeof req.file !== "undefined"){
+        let url= req.file.path;
+        let filename= req.file.filename;
+        listing.image= {url, filename};
+        await listing.save();
+    }
     res.redirect(`/listing/${id}`);
 })
 

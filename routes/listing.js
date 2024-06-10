@@ -27,7 +27,7 @@ router.get("/new", isLoggedIn, listingControllers.renderNewFrom)
 // Show-Edit-Destroy Route
 router.route("/:id")
     .get(listingControllers.showListing) 
-    .put(validateListing, isLoggedIn, isOwner, listingControllers.updateListing) 
+    .put(upload.single('listing[image]'), validateListing, isLoggedIn, isOwner, listingControllers.updateListing) 
     .delete(isLoggedIn, isOwner, listingControllers.destroyListing) 
 
 //Edit Route
