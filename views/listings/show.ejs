@@ -1,4 +1,7 @@
 <% layout("/layouts/boilerplate") -%>
+    <script>
+        window.mapToken= "<%= process.env.MAP_TOKEN %>";
+    </script>
     <body>
         <h1 class="offset-3"><%= listing.title %></h1>
         <div class="row">
@@ -94,14 +97,5 @@
             </div>
             <% } %>
         </div>
-        <script>
-            let mapToken= "<%= process.env.MAP_TOKEN %>"
-            console.log(mapToken);
-            mapboxgl.accessToken = mapToken;
-            const map = new mapboxgl.Map({
-                container: 'map', // container ID
-                center: [-74.5, 40], // starting position [lng, lat]
-                zoom: 9 // starting zoom
-            });
-        </script>
+        <script src="/js/map.js"></script>
     </body>
