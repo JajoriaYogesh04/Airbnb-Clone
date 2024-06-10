@@ -3,6 +3,9 @@
         <h2 class="mt-3 offset-2">Edit Listing</h2>
         <div class="row">
             <div class="col-8 offset-2">
+                <div class="card listing-card">
+                    <img src="<%= originalImageUrl %>" class="card-img-top show-img" alt="show_image">
+                </div>
                 <form action="/listing/<%=editListing._id%>?_method=PUT" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
