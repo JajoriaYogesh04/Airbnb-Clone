@@ -1,6 +1,7 @@
 <% layout("/layouts/boilerplate") -%>
     <script>
         window.mapToken= "<%= process.env.MAP_TOKEN %>";
+        coordinates= <%- JSON.stringify(listing.geometry.coordinates) %>
     </script>
     <body>
         <h1 class="offset-3"><%= listing.title %></h1>
@@ -16,7 +17,7 @@
                         <p class="card-text"><%= listing.location %></p>
                     </div>
                 </div>
-                <div class="edit-delete-button">
+                <div class="edit-delete-button mb-3">
                     <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
                     <div class="row">
                         <form class="col-1" action="/listing/<%=listing._id%>/edit" method="GET">

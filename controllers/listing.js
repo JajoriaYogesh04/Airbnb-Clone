@@ -82,7 +82,7 @@ module.exports.createListing= wrapAsync(async (req, res, next)=>{
     // }
     newListing.image= { url, filename };
     let savedListing= await newListing.save();
-    console.log(savedListing);
+    // console.log(savedListing);
     res.redirect("/listing");   
 })
 

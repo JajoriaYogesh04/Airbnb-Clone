@@ -2,6 +2,11 @@ console.log(mapToken);
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
     container: 'map', // container ID
-    center: [75.7737, 26.9091], // starting position [lng, lat]
-    zoom: 9 // starting zoom
+    center: coordinates, // starting position [lng, lat]
+    zoom: 10 // starting zoom
 });
+
+// console.log(coordinates);
+new mapboxgl.Marker({color: "red"})
+.setLngLat(coordinates)
+.addTo(map);
