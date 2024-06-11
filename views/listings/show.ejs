@@ -1,7 +1,7 @@
 <% layout("/layouts/boilerplate") -%>
     <script>
         window.mapToken= "<%= process.env.MAP_TOKEN %>";
-        coordinates= <%- JSON.stringify(listing.geometry.coordinates) %>
+        listings= <%- JSON.stringify(listing) %>
     </script>
     <body>
         <h1 class="offset-3"><%= listing.title %></h1>
