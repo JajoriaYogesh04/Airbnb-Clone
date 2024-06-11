@@ -49,8 +49,8 @@ module.exports.createListing= wrapAsync(async (req, res, next)=>{
         })
         .send()
     // console.log(response);
-    console.log(response.body.features[0].geometry);
-    res.send("done");
+    // console.log(response.body.features[0].geometry);
+    // res.send("done");
 
     let url= req.file.path;
     let filename= req.file.filename;
@@ -64,6 +64,7 @@ module.exports.createListing= wrapAsync(async (req, res, next)=>{
     // }
     let newListing= new Listing(listing);
     newListing.owner= req.user._id;
+    newListing.geometry= response.body.features[0].geometry;
     // if(!newListing.title){
     //     throw new ExpressError(400, "Send Valid Title For Listing");
     // }
@@ -80,7 +81,8 @@ module.exports.createListing= wrapAsync(async (req, res, next)=>{
     //     throw new ExpressError(400, "Send Valid Country For Listing");
     // }
     newListing.image= { url, filename };
-    await newListing.save()
+    let savedListing= await newListing.save();
+    console.log(savedListing);
     res.redirect("/listing");   
 })
 
