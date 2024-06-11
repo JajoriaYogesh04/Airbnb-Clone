@@ -62,10 +62,10 @@ main().then(()=>{console.log("Connected to Mongoose")})
 .catch((err)=>{console.log(err)});
 
 //Set up
-app.get("/", (req, res)=>{
-    console.log("Index Route Successfully");
-    res.send("Index Route Successfully");
-})
+// app.get("/", (req, res)=>{
+//     console.log("Index Route Successfully");
+//     res.send("Index Route Successfully");
+// })
 
 // app.get("/testListing", async (req, res)=>{
 //     let sampleListing= new Listing({
@@ -88,15 +88,15 @@ app.use((req, res, next)=>{
     next();
 })
 
-app.get("/demouser", async (req, res)=>{
-    let fakeUser= new User({
-        email:"demo2@gmail.com",
-        username: "demo-user2",
-    })
-    let registeredUser= await User.register(fakeUser, "helloworld");
-    console.log(registeredUser);
-    res.send(registeredUser);
-})
+// app.get("/demouser", async (req, res)=>{
+//     let fakeUser= new User({
+//         email:"demo2@gmail.com",
+//         username: "demo-user2",
+//     })
+//     let registeredUser= await User.register(fakeUser, "helloworld");
+//     console.log(registeredUser);
+//     res.send(registeredUser);
+// })
 
 app.use("/listing", listingsRouter);
 
