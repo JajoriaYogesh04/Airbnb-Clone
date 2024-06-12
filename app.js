@@ -2,6 +2,8 @@ if(process.env.NODE_ENV != "production"){
     require('dotenv').config()
 }
 
+const dbUrl= process.env.ATLASDB_URL
+
 const express= require("express");
 const mongoose= require("mongoose");
 const methodOverride= require("method-override");
@@ -55,7 +57,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser())
 
 async function main(){
-    await mongoose.connect(mongoose_url); 
+    await mongoose.connect(dbUrl); 
 }
 
 main().then(()=>{console.log("Connected to Mongoose")})
