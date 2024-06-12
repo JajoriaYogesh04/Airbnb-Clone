@@ -25,6 +25,7 @@ const usersRouter= require("./routes/user.js");
 
 const session= require("express-session");
 const flash= require("connect-flash");
+const MongoStore = require('connect-mongo');
 
 const User= require("./models/user.js");
 const passport= require("passport");
@@ -37,7 +38,18 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
+const store= MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto: {
+        secret: "mysecretcode",
+    },
+    touchAfter: 24 * 3600 // time period in seconds
+})
+store.on("error", ()=>{
+    console.log("ERROR in MONGO SESSION STORE", err);
+})
 const sessionOptions= {
+    store,
     secret: "mysecretcode",
     resave: false,
     saveUninitialized: true,
