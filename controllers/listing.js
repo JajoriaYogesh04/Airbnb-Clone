@@ -118,8 +118,8 @@ module.exports.updateListing= wrapAsync(async (req, res)=>{
         .send()
     // console.log(id);
     // res.send(editRequest);
-    console.log(editRequest)
-    console.log(response.body.features[0])
+    // console.log(editRequest)
+    // console.log(response.body.features[0])
     if(!editRequest){
         throw new ExpressError(400, "Send Valid Data For Listing");
     }
