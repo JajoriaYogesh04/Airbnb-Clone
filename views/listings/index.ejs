@@ -25,6 +25,19 @@
         .filter-text{
             font-size: 0.7rem;
         }
+        .tax-price{
+            display: none;
+        }
+        .tax-switch{
+            border: 1px solid black;
+            height: 2.5rem;
+            display: flex;
+            width: 15rem;
+            align-items: center;
+            border-radius: 0.6rem;
+            justify-content: center;
+            margin-top: 0.3rem;
+        }
     </style>
     <body>
         <div class="filters mt-3">
@@ -80,10 +93,12 @@
                 <div class="filter-icons"><i class="fa-solid fa-sailboat"></i></div>
                 <div class="filter-text"><p>Boats</p></div>
             </div>
-            <div class="tax-toggle">
-                <div class="form-check form-switch form-check-reverse">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Display total after texes</label>
+            <div class="tax-switch ms-auto">
+                <div class="tax-toggle  ">
+                    <div class="form-check form-switch form-check-reverse">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Display total after texes</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,6 +114,7 @@
                             <p class="card-text">
                                 <b><%= listing.title %></b><br>
                                 &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                                <i class="tax-price">&nbsp;&nbsp;+18% GST</i>
                             </p>
                         </div>
                     </div>
@@ -109,7 +125,16 @@
     <script>
         const taxSwitch= document.getElementById("flexSwitchCheckDefault");
         taxSwitch.addEventListener("click",()=>{
-            console.log("Clicked");
+            let taxPrice= document.getElementsByClassName("tax-price");
+            // console.log(taxPrice);
+            for(let info of taxPrice){
+                if(info.style.display != "inline"){
+                    info.style.display= "inline";
+                }
+                else{
+                    info.style.display= "none";
+                }
+            }
         })
     </script>
 
